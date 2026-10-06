@@ -1,6 +1,8 @@
 #This file was created by: Jefin Lalaquit
 #Content inspired by: Chris Bradfield
 #I do solemnly swear to create concise and informative comments
+
+#funny coment #grrr mondays
  
 """
 The game engine consists of four basic components:
@@ -39,11 +41,12 @@ class Game:
     def new(self):
 
         self.load_data("level1.txt")
-        print(self.map.data)
 
         self.all_sprites = pg.sprite.Group()
         self.all_walls = pg.sprite.Group()
         # self.all_enemys = pg.sprite.Group()
+
+        print(self.map.data)
 
         # Wall Creator
         for row, tiles in enumerate(self.map.data):
