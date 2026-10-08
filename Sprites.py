@@ -41,7 +41,7 @@ class Player(Sprite):
         Sprite.__init__(self, self.groups)
         self.game = game
         # this provides us with raster images
-        self.spritesheet = SpriteSheet(path.join(self.game.img_dir, "SpriteSheet.png"))
+        self.spritesheet = SpriteSheet(path.join(self.game.img_dir, "New-Piskel-2.png"))
         self.image = pg.Surface((Tilesize, Tilesize))
         self.image = self.spritesheet.get_image(0, 0, Tilesize, Tilesize)
         #self.image.fill(White)
@@ -78,8 +78,8 @@ class Player(Sprite):
         if keys[pg.K_s]:
             self.vel.y = player_speed
 
-        if self.vel.x != 0 and self.vel.y != 0:
-            self.vel *= 0.7071
+        #if self.vel.x != 0 and self.vel.y != 0:
+            #self.vel *= 0.7071
        
  
     def jump(self):

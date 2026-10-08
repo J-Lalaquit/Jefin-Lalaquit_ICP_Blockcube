@@ -2,7 +2,7 @@
 #Content inspired by: Chris Bradfield
 #I do solemnly swear to create concise and informative comments
 
-#funny coment #grrr mondays
+#funny comment #grrr mondays
  
 """
 The game engine consists of four basic components:
@@ -12,6 +12,11 @@ Process: input processes direction of control
 Output: draw pixels, sound, haptic
 Store:
  
+Goals:Get fish to make mony
+Rules: Dunno 
+Feedback: 
+Freedom:You can go fishing :/
+
 """
 
 import pygame as pg
@@ -80,10 +85,21 @@ class Game:
  
     def update(self):
         self.all_sprites.update()
- 
+
+#Draw_text basically helps draws text on the screen anywhere
+    def draw_text(self, text, size, color, x, y):
+        font_name = pg.font.match_font("arial")
+        #instantiates the Font class
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x,y)
+        self.screen.blit(text_surface, text_rect)
+
     def draw(self):
         self.screen.fill(Blue) #Changes color of bg/bd
         self.all_sprites.draw(self.screen)
+        self.draw_text("Frames Per Second (FPS): " + str(floor(1/self.dt)), 24, White, WIDTH/2, HEIGHT/4)
         pg.display.flip()
  
 if __name__ == "__main__":
