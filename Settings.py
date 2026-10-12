@@ -7,7 +7,7 @@ import pygame as pg
 WIDTH = 1024
 HEIGHT = 768
 TITLE = "Gameiosos"
-Tilesize = 32
+TILESIZE = 32
 FPS = 30
 
 #Colors
@@ -19,5 +19,10 @@ Green = (50, 255, 50)
 
 #Player Settings
 
-player_speed = 300
-PLAYER_HIT_RECT = pg.Rect(0,0, Tilesize-5, Tilesize-5)
+PLAYER_SPEED = 300
+PLAYER_HIT_RECT = pg.Rect(0,0, TILESIZE-5, TILESIZE-5)
+
+#Enemy Settings
+
+ENEMY_SPEED = 300
+ENEMY_HIT_RECT = pg.Rect(0,0, TILESIZE-5, TILESIZE-5)

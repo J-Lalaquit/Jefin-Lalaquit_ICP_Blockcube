@@ -13,8 +13,9 @@ class Map:
         self.tilewidth = len(self.data[0])
         print(self.data)
         self.tileheight = len(self.data)
-        self.width = self.tilewidth * Tilesize
-        self.height = self.tileheight * Tilesize
+        self.width = self.tilewidth * TILESIZE
+        self.height = self.tileheight * TILESIZE
+        print('Map instantiated...')
 
 class SpriteSheet:
     def __init__(self, filename):
