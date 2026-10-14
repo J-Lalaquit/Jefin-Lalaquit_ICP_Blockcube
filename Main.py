@@ -34,29 +34,40 @@ class Game:
         pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         print('game class initialized')
+        pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.running = True
         self.playing = True
 
     def load_data(self, map):
         self.game_dir = path.dirname(__file__)
+        self.game_save_dir = path.join(self.game_dir, "example.txt")
         self.img_dir = path.join(self.game_dir, 'images')
         self.map = Map(path.join(self.game_dir, map))
+        # try:
+        #     with open(self.game_save_dir, "x", encoding="utf-8") as file:
+        #         file.write("Hello World!")
+        #     print("file created succesfully")
+        # except FileExistsError:
+        #     print("File already exists. no action taken")
 
     def new(self):
         self.load_data('level1.txt')
         self.all_sprites = pg.sprite.Group()
         self.all_walls = pg.sprite.Group()
         self.all_enemys = pg.sprite.Group()
+        self.all_coins = pg.sprite.Group()
         
         self.wall = Wall(self,6,7)
         print(self.map.data)
 
-        # Wall Creator
+        # Wall Creator + Enemy Creator
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
                     Wall(self, col, row)
+                if tile == 'C':
+                    Coin(self,col,row)
                 if tile == 'M':
                     Enemy(self,col,row)
 
