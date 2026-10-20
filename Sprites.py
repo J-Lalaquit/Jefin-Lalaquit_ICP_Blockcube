@@ -11,6 +11,7 @@ vec = pg.math.Vector2
 def collide_hit_rect(one, two):
     return one.hit_rect.colliderect(two.rect)
 
+#Checks fot collisons on x and y axis
 def collide_with_walls(sprite, group, dir):
     if dir == 'x':
 
@@ -35,6 +36,7 @@ def collide_with_walls(sprite, group, dir):
             sprite.vel.y = 0
             sprite.hit_rect.centery = sprite.pos.y
 
+#Player Class
 class Player(Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
@@ -44,8 +46,9 @@ class Player(Sprite):
         self.spritesheet = SpriteSheet(path.join(self.game.img_dir, "Spritesheet(3).png"))
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.image = self.spritesheet.get_image(0,0,TILESIZE, TILESIZE)
+        # corner_color = self.image.get_at((0,0))
+        # print(f"corner color: {corner_color}")
         self.image.set_colorkey(Black)
-
         # self.image.fill(White)
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -59,6 +62,8 @@ class Player(Sprite):
         # The states of the player
         self.jumping = False
         self.moving = False
+        self.coins = 0
+        #Player instantiated:
         print("player instance created")
         self.load_images()
 
@@ -83,6 +88,7 @@ class Player(Sprite):
     def jump(self):
         pass
 
+    #Does player anims
     def load_images(self):
         self.idle_frames = [self.spritesheet.get_image(0,0, TILESIZE,TILESIZE), self.spritesheet.get_image(32,0, TILESIZE,TILESIZE)]
     def animate(self):
@@ -103,12 +109,22 @@ class Player(Sprite):
                 self.image = self.moving_frames[self.current_frame]
                 self.rect = self.image.get_rect()
                 self.rect.bottom = bottom
-            
+
+    #Updates player inputs and animations also collison :/        
     def update(self):
         self.get_keys()
         self.animate()
         self.rect.center = self.pos
         self.pos += self.vel * self.game.dt
+
+        # Collect Code
+        collect = pg.sprite.spritecollide(self, self.game.all_coins, True)
+        if collect:
+            self.coins += 1
+            self.game.score += 1
+            self.game.pickupcoin_snd.play()
+            print(f"I have {self.coins} coins")
+
         self.hit_rect.centerx = self.pos.x
         collide_with_walls(self, self.game.all_walls, 'x')
         self.hit_rect.centery = self.pos.y
@@ -131,8 +147,7 @@ class Enemy(Sprite):
         self.rect.x = x
         self.rect.y = y
         # self.vx, self.vy = 0,0
-        #speed of the enemy
-        self.speed = 100
+        self.speed = 100 # speed of the enemy
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE
         self.hit_rect = ENEMY_HIT_RECT
@@ -144,6 +159,7 @@ class Enemy(Sprite):
         print("enemy instance created")
         self.load_images()
 
+    #Does Enenmy anims
     def load_images(self):
         self.idle_frames = [self.spritesheet.get_image(0,32, TILESIZE,TILESIZE), self.spritesheet.get_image(32,32, TILESIZE,TILESIZE)]
     def animate(self):
@@ -171,7 +187,8 @@ class Enemy(Sprite):
         if Direction.length() > 0:
             Direction = Direction.normalize()
         self.vel = Direction
-            
+
+    #Updates enemy pos, hasing, and collsion        
     def update(self):
         self.animate()
         self.follow(self.game.player)
@@ -183,6 +200,7 @@ class Enemy(Sprite):
         collide_with_walls(self, self.game.all_walls, 'y')
         self.rect.center = self.hit_rect.center
 
+#Wall Class
 class Wall(Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.all_walls
@@ -196,6 +214,7 @@ class Wall(Sprite):
         self.rect.center = self.pos
         print("wall instance created")
 
+#Coin Class
 class Coin(Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.all_coins

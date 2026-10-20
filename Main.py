@@ -38,18 +38,36 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         self.playing = True
+        self.score = 0
+        self.highscore = 0
 
     def load_data(self, map):
         self.game_dir = path.dirname(__file__)
-        self.game_save_dir = path.join(self.game_dir, "example.txt")
+        self.game_save_dir = path.join(self.game_dir, "highscore.txt")
+
         self.img_dir = path.join(self.game_dir, 'images')
+
+        #Sound Handling
+        self.snd_dir = path.join(self.game_dir, 'sounds_coolski')
+        self.pickupcoin_snd = pg.mixer.Sound(path.join(self.snd_dir, "Coin_Collection.wav"))
+
         self.map = Map(path.join(self.game_dir, map))
-        # try:
-        #     with open(self.game_save_dir, "x", encoding="utf-8") as file:
-        #         file.write("Hello World!")
-        #     print("file created succesfully")
-        # except FileExistsError:
-        #     print("File already exists. no action taken")
+
+    #Checks if the file exists and if it doesn't it makes one
+        try:
+            with open(self.game_save_dir, "x", encoding="utf-8") as file:
+                file.write("Hello 67!")
+            print("file created succesfully")
+        except FileExistsError:
+            print("File already exists. no action taken")
+
+        with open(self.game_save_dir, 'r') as f:
+            try:
+                self.highscore = int(f.read())
+                print("Highscore Created")
+            except:
+                self.highscore = 0
+                # print("Dunno but this is commented out")
 
     def new(self):
         self.load_data('level1.txt')
@@ -59,9 +77,13 @@ class Game:
         self.all_coins = pg.sprite.Group()
         
         self.wall = Wall(self,6,7)
+        self.coin = Coin(self,4,1)
+        self.coin = Coin(self,6,1)
+        self.coin = Coin(self,5,5)
+
         print(self.map.data)
 
-        # Wall Creator + Enemy Creator
+        # Wall Creator + Enemy Creator + Coin Creator
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
@@ -77,6 +99,8 @@ class Game:
                 if tile == 'P':
                     self.player = Player(self, col, row)
 
+        # pg.mixer.music.load(path.join(self.snd_dir, "Nothing yet :/"))
+
     def run(self):
         while self.running:
             self.dt = self.clock.tick(FPS) / 1000
@@ -87,6 +111,8 @@ class Game:
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                with open(path.join(self.game_dir, self.game_save_dir), 'w') as f:
+                    f.write(str(self.score))
                 if self.playing:
                     self.playing = False
                 self.running = False
@@ -109,6 +135,7 @@ class Game:
         self.screen.fill(Blue) #changes color of bg
         self.all_sprites.draw(self.screen)
         self.draw_text("Frames Per Second (FPS): " + str(floor(1/self.dt) ), 24, White, WIDTH/2, HEIGHT/4)
+        self.draw_text(f"Coins: {self.player.coins}", 24, Yellow, WIDTH/2, WIDTH/10)
         pg.display.flip()
 
 if __name__ == "__main__":
