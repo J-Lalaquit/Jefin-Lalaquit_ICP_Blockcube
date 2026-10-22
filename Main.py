@@ -111,8 +111,12 @@ class Game:
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                with open(path.join(self.game_dir, self.game_save_dir), 'w') as f:
-                    f.write(str(self.score))
+
+                #Checks if scor/coins is greater than previous highscore
+                if self.score > self.highscore:
+                    with open(path.join(self.game_dir, self.game_save_dir), 'w') as f:
+                        f.write(str(self.score))
+                    
                 if self.playing:
                     self.playing = False
                 self.running = False
@@ -136,6 +140,8 @@ class Game:
         self.all_sprites.draw(self.screen)
         self.draw_text("Frames Per Second (FPS): " + str(floor(1/self.dt) ), 24, White, WIDTH/2, HEIGHT/4)
         self.draw_text(f"Coins: {self.player.coins}", 24, Yellow, WIDTH/2, WIDTH/10)
+        self.draw_text(f"Highscore: {self.highscore}", 24, White, WIDTH/6, WIDTH/32)
+
         pg.display.flip()
 
 if __name__ == "__main__":
