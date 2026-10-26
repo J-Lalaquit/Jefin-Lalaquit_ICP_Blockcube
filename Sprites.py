@@ -4,6 +4,8 @@ from Settings import *
 from Utills import *
 from os import path
 
+from random import randint
+
 vec = pg.math.Vector2
 
 # create player class with Sprite as super Class
@@ -120,6 +122,8 @@ class Player(Sprite):
         # Collect Code
         collect = pg.sprite.spritecollide(self, self.game.all_coins, True)
         if collect:
+            for i in range(10):
+                Particle(self.game, collect[0].pos.x, collect[0].pos.y)
             self.coins += 1
             self.game.score += 1
             self.game.pickupcoin_snd.play()
@@ -213,6 +217,31 @@ class Wall(Sprite):
         self.pos = vec(x,y) * TILESIZE
         self.rect.center = self.pos
         print("wall instance created")
+
+class Particle(Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.all_partickles
+        Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE/8, TILESIZE/8))
+        self.image.fill(Yellow) #changes color of partickle
+        self.rect = self.image.get_rect()
+
+        self.vx, self.vy = 0,0
+        self.x = x*randint(-5, 5)
+        self.y = y*randint(-5, 5)
+        self.speed = 25
+        self.countdown = Cooldown(5000)
+        self.countdown.event_time = floor(pg.time.get_ticks()/1000)
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+    def update(self):
+        self.countdown.tiki()
+        self.rect.x += self.speed
+        self.rect.y += self.speed
+        if self.countdown.delta > 3:
+            self.kill()
 
 #Coin Class
 class Coin(Sprite):

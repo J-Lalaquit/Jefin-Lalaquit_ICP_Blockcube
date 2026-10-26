@@ -18,6 +18,7 @@ Black = (0, 0, 0)
 Blue = (50, 50, 255)
 White = (255,255,255)
 Green = (50, 255, 50)
+Red = (255, 0, 0)
 
 #Player Settings
 

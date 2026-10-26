@@ -75,11 +75,15 @@ class Game:
         self.all_walls = pg.sprite.Group()
         self.all_enemys = pg.sprite.Group()
         self.all_coins = pg.sprite.Group()
+        self.all_partickles = pg.sprite.Group()
         
         self.wall = Wall(self,6,7)
-        self.coin = Coin(self,4,1)
-        self.coin = Coin(self,6,1)
-        self.coin = Coin(self,5,5)
+
+        #Block of coins
+        self.coin = Coin(self,3,2)
+        self.coin = Coin(self,3,1)
+        self.coin = Coin(self,2,1)
+        self.coin = Coin(self,2,2)
 
         print(self.map.data)
 
@@ -112,7 +116,7 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
 
-                #Checks if scor/coins is greater than previous highscore
+                #Checks if score/coins is greater than previous highscore
                 if self.score > self.highscore:
                     with open(path.join(self.game_dir, self.game_save_dir), 'w') as f:
                         f.write(str(self.score))
@@ -140,7 +144,7 @@ class Game:
         self.all_sprites.draw(self.screen)
         self.draw_text("Frames Per Second (FPS): " + str(floor(1/self.dt) ), 24, White, WIDTH/2, HEIGHT/4)
         self.draw_text(f"Coins: {self.player.coins}", 24, Yellow, WIDTH/2, WIDTH/10)
-        self.draw_text(f"Highscore: {self.highscore}", 24, White, WIDTH/6, WIDTH/32)
+        self.draw_text(f"Highscore: {self.highscore}", 24, Red, WIDTH/6, WIDTH/32)
 
         pg.display.flip()
 
