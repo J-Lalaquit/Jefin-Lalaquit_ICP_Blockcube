@@ -13,7 +13,7 @@ vec = pg.math.Vector2
 def collide_hit_rect(one, two):
     return one.hit_rect.colliderect(two.rect)
 
-#Checks fot collisons on x and y axis
+#Checks for collisons on x and y axis
 def collide_with_walls(sprite, group, dir):
     if dir == 'x':
 
@@ -122,12 +122,17 @@ class Player(Sprite):
         # Collect Code
         collect = pg.sprite.spritecollide(self, self.game.all_coins, True)
         if collect:
-            for i in range(10):
-                Particle(self.game, collect[0].pos.x, collect[0].pos.y)
+            #updates player's coins and score
             self.coins += 1
             self.game.score += 1
+            #Play's coin pickup sound
             self.game.pickupcoin_snd.play()
             print(f"I have {self.coins} coins")
+
+            #Spawns partickles when coin is collected
+            for i in range(10): #changing the value in range changes how many partickles fly out
+                Particle(self.game, collect[0].pos.x, collect[0].pos.y)
+                collect[0].kill()
 
         self.hit_rect.centerx = self.pos.x
         collide_with_walls(self, self.game.all_walls, 'x')
@@ -192,7 +197,7 @@ class Enemy(Sprite):
             Direction = Direction.normalize()
         self.vel = Direction
 
-    #Updates enemy pos, hasing, and collsion        
+    #Updates enemy pos, chasing, and collsion        
     def update(self):
         self.animate()
         self.follow(self.game.player)
@@ -218,6 +223,7 @@ class Wall(Sprite):
         self.rect.center = self.pos
         print("wall instance created")
 
+#Partickle class
 class Particle(Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.all_partickles
@@ -227,21 +233,23 @@ class Particle(Sprite):
         self.image.fill(Yellow) #changes color of partickle
         self.rect = self.image.get_rect()
 
-        self.vx, self.vy = 0,0
-        self.x = x*randint(-5, 5)
-        self.y = y*randint(-5, 5)
-        self.speed = 25
-        self.countdown = Cooldown(5000)
+        #Makes the particle go in random directions
+        self.vel = vec(randint(-180,180), randint(-180,180))
+        self.pos = vec(x,y)
+        self.speed = 5
+        self.rect.center = self.pos
+        #sets a cooldown when to kill the partickle
+        self.countdown = Cooldown()
         self.countdown.event_time = floor(pg.time.get_ticks()/1000)
-        self.rect.x = self.x
-        self.rect.y = self.y
 
     def update(self):
         self.countdown.tiki()
-        self.rect.x += self.speed
-        self.rect.y += self.speed
-        if self.countdown.delta > 3:
+        self.pos += self.vel * self.speed * self.game.dt  
+        #Removes partickle after half a second     
+        if self.countdown.delta > 0.5:
             self.kill()
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
 
 #Coin Class
 class Coin(Sprite):
