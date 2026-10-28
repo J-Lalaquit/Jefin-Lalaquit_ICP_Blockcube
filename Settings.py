@@ -20,12 +20,14 @@ White = (255,255,255)
 Green = (50, 255, 50)
 Red = (255, 0, 0)
 
-#Player Settings
+#Player Settings:
 
-PLAYER_SPEED = 300
+# PLAYER_SPEED = 300
+PLAYER_SPEED = 2
+PLAYER_FRICTION = -0.1
 PLAYER_HIT_RECT = pg.Rect(0,0, TILESIZE-5, TILESIZE-5)
 
-#Enemy Settings
+#Enemy Settings:
 
 ENEMY_SPEED = 300
 ENEMY_HIT_RECT = pg.Rect(0,0, TILESIZE-5, TILESIZE-5)

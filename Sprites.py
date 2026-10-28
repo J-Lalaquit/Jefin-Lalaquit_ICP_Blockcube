@@ -53,10 +53,10 @@ class Player(Sprite):
         self.image.set_colorkey(Black)
         # self.image.fill(White)
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        #player motion attributes:
         # self.vx, self.vy = 0,0
         self.vel = vec(0,0)
+        self.accel = (0,0)
         self.pos = vec(x,y) * TILESIZE
         self.hit_rect = PLAYER_HIT_RECT
         self.current_frame = 0
@@ -71,21 +71,25 @@ class Player(Sprite):
 
     #gets player inputs
     def get_keys(self):
-        self.vel = vec(0,0)
+        # self.vel = vec(0,0)
         # self.vx, self.vy = 0,0
         keys = pg.key.get_pressed()
 
         if keys[pg.K_a]:
-            self.vel.x = -PLAYER_SPEED
+            # self.vel.x = -PLAYER_SPEED
+            self.accel.x = -PLAYER_SPEED
 
         if keys[pg.K_d]:
-            self.vel.x = PLAYER_SPEED
+            # self.vel.x = PLAYER_SPEED
+            self.accel.x = PLAYER_SPEED
 
         if keys[pg.K_w]:
-            self.vel.y = -PLAYER_SPEED
+            # self.vel.y = -PLAYER_SPEED
+            self.accel.y = -PLAYER_SPEED
 
         if keys[pg.K_s]:
-            self.vel.y = PLAYER_SPEED
+            # self.vel.y = PLAYER_SPEED
+            self.accel.y = PLAYER_SPEED
 
     def jump(self):
         pass
@@ -114,10 +118,17 @@ class Player(Sprite):
 
     #Updates player inputs and animations also collison :/        
     def update(self):
+        self.accel = vec(0,0)
         self.get_keys()
+        #Physics code
+        self.accel.x += self.vel.x * PLAYER_FRICTION
+        self.accel.y += self.vel.y * PLAYER_FRICTION
+        self.vel += self.accel
+
         self.animate()
         self.rect.center = self.pos
-        self.pos += self.vel * self.game.dt
+        # self.pos += self.vel * self.game.dt
+        self.pos += self.vel + 0.5 * self.accel
 
         # Collect Code
         collect = pg.sprite.spritecollide(self, self.game.all_coins, True)
@@ -130,7 +141,7 @@ class Player(Sprite):
             print(f"I have {self.coins} coins")
 
             #Spawns partickles when coin is collected
-            for i in range(10): #changing the value in range changes how many partickles fly out
+            for i in range(25): #changing the value in range changes how many partickles fly out
                 Particle(self.game, collect[0].pos.x, collect[0].pos.y)
                 collect[0].kill()
 
