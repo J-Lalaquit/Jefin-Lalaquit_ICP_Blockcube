@@ -141,7 +141,7 @@ class Player(Sprite):
             print(f"I have {self.coins} coins")
 
             #Spawns partickles when coin is collected
-            for i in range(25): #changing the value in range changes how many partickles fly out
+            for i in range(50): #changing the value in range changes how many partickles fly out
                 Particle(self.game, collect[0].pos.x, collect[0].pos.y)
                 collect[0].kill()
 
