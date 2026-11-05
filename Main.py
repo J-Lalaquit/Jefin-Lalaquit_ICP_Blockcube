@@ -12,9 +12,9 @@ Process: input processes direction of control
 Output: draw pixels, sound, haptic
 Store:
  
-Goals:Get fish to make mony
+Goals: Get fish to make money
 Rules: You can't go in the ocean or you will drown 
-Feedback: Keybinds to Move and Spacebar to Jump
+Feedback: Keybinds to move
 Freedom:You can go fishing
 
 """
@@ -76,6 +76,7 @@ class Game:
         self.all_enemys = pg.sprite.Group()
         self.all_coins = pg.sprite.Group()
         self.all_partickles = pg.sprite.Group()
+        self.all_tiles = pg.sprite.Group()
         
         self.wall = Wall(self,6,7)
 

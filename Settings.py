@@ -8,7 +8,7 @@ WIDTH = 1024
 HEIGHT = 768
 TITLE = "Square Gangularis"
 TILESIZE = 32
-FPS = 30
+FPS = 60
 
 #Colors
 
@@ -23,7 +23,7 @@ Red = (255, 0, 0)
 #Player Settings:
 
 # PLAYER_SPEED = 300
-PLAYER_SPEED = 2
+PLAYER_SPEED = 1
 PLAYER_FRICTION = -0.1
 PLAYER_HIT_RECT = pg.Rect(0,0, TILESIZE-5, TILESIZE-5)
 

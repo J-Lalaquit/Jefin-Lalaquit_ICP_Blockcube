@@ -145,12 +145,21 @@ class Player(Sprite):
                 Particle(self.game, collect[0].pos.x, collect[0].pos.y)
                 collect[0].kill()
 
+        #Touch Tile Code
+        T_Tile = pg.sprite.spritecollide(self, self.game.all_coins, False)
+        if T_Tile:
+            if T_Tile[0].variant == "ice":
+                pass
+            else:
+                pass
+
         self.hit_rect.centerx = self.pos.x
         collide_with_walls(self, self.game.all_walls, 'x')
         self.hit_rect.centery = self.pos.y
         collide_with_walls(self, self.game.all_walls, 'y')
         self.rect.center = self.hit_rect.center
 
+#Enemy Class
 #Copied all the code from the Player class but changed some stuff
 class Enemy(Sprite):
     def __init__(self, game, x, y):
@@ -280,3 +289,18 @@ class Coin(Sprite):
         self.pos = vec(x,y) * TILESIZE
         self.rect.center = self.pos
         print("Coin instance created")
+
+#FloorTile Class
+#Copied the code from the Wall
+class FloorTile(Sprite):
+    def __init__(self, game, x, y, color): 
+        self.groups = game.all_sprites, game.all_tiles
+        Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.vel = vec(0,0)
+        self.pos = vec(x, y) * TILESIZE
+        self.rect.center = self.pos
+        self.variant = ""
