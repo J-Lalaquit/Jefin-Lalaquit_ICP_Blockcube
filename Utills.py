@@ -27,6 +27,8 @@ class SpriteSheet:
         #when applying pygame translation transformation & scale we need to pass the newley transformed object data
         new_image = pg.transform.scale(image, (width, height))
         image = new_image
+        #adding colorkey here makes sure that the greenscreen on the sprites is transparent
+        image.set_colorkey(Greenscreen)
         return image
 
 class Cooldown:

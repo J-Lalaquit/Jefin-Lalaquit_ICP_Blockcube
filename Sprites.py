@@ -45,12 +45,12 @@ class Player(Sprite):
         Sprite.__init__(self, self.groups)
         self.game = game
         # this provides us wtih raster images
-        self.spritesheet = SpriteSheet(path.join(self.game.img_dir, "Spritesheet(3).png"))
+        self.spritesheet = SpriteSheet(path.join(self.game.img_dir, "Spritesheet(4).png"))
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.image = self.spritesheet.get_image(0,0,TILESIZE, TILESIZE)
         # corner_color = self.image.get_at((0,0))
         # print(f"corner color: {corner_color}")
-        self.image.set_colorkey(Black)
+        self.image.set_colorkey(Greenscreen)
         # self.image.fill(White)
         self.rect = self.image.get_rect()
         #player motion attributes:
@@ -167,10 +167,10 @@ class Enemy(Sprite):
         Sprite.__init__(self, self.groups)
         self.game = game
         # this provides us wtih raster images
-        self.spritesheet = SpriteSheet(path.join(self.game.img_dir, "Spritesheet(3).png"))
+        self.spritesheet = SpriteSheet(path.join(self.game.img_dir, "Spritesheet(4).png"))
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.image = self.spritesheet.get_image(0, 32,TILESIZE, TILESIZE)
-        self.image.set_colorkey(Black)
+        self.image.set_colorkey(Greenscreen)
         # self.image.fill(White)
         self.rect = self.image.get_rect()
         self.rect.x = x

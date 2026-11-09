@@ -90,7 +90,7 @@ class Game:
 
         print(self.map.data)
 
-        # Wall Creator + Enemy Creator + Coin Creator
+        # Wall Creator + Enemy Creator + Coin Creator + Floor Tile Creator
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
