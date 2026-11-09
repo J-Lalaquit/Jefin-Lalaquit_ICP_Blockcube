@@ -64,6 +64,7 @@ class Player(Sprite):
         # The states of the player
         self.jumping = False
         self.moving = False
+        # self.cofric = -0.1
         self.coins = 0
         #Player instantiated:
         print("player instance created")
@@ -124,7 +125,6 @@ class Player(Sprite):
         self.accel.x += self.vel.x * PLAYER_FRICTION
         self.accel.y += self.vel.y * PLAYER_FRICTION
         self.vel += self.accel
-
         self.animate()
         self.rect.center = self.pos
         # self.pos += self.vel * self.game.dt

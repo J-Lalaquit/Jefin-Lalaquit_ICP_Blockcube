@@ -32,7 +32,9 @@ class Game:
     def __init__(self):
         pg.init()
         pg.mixer.init()
-        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        self.fullscreen = True
+        #Changes to fullscreen mode
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT), pg.FULLSCREEN)
         print('game class initialized')
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
@@ -97,6 +99,10 @@ class Game:
                     Coin(self,col,row)
                 if tile == 'M':
                     Enemy(self,col,row)
+                if tile == 'I':
+                    f = FloorTile(self,col,row, Black)
+                    f.variant = 'ice'
+
 
         # Player Creator
         for row, tiles in enumerate(self.map.data):
@@ -114,7 +120,19 @@ class Game:
             self.draw() # this draws sprites
     
     def events(self):
+        #found this code from this website called zenva: https://gamedevacademy.org/pygame-fullscreen-tutorial-complete-guide/
         for event in pg.event.get():
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.fullscreen = False
+                elif event.key == pg.K_F11:
+                    self.fullscreen = not self.fullscreen
+
+                if event.key in (pg.K_ESCAPE, pg.K_F11):
+                    #Did some research for this one. Flags helps changes the display setup. If fullscreen is true then it will be fullscreen if not then it will be normal
+                    flags = pg.FULLSCREEN if self.fullscreen == True else 0
+                    self.screen = pg.display.set_mode((WIDTH, HEIGHT), flags)
+
             if event.type == pg.QUIT:
 
                 #Checks if score/coins is greater than previous highscore
