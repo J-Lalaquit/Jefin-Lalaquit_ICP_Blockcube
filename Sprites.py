@@ -145,19 +145,19 @@ class Player(Sprite):
                 Particle(self.game, collect[0].pos.x, collect[0].pos.y)
                 collect[0].kill()
 
-        #Touch Tile Code
-        T_Tile = pg.sprite.spritecollide(self, self.game.all_coins, False)
-        if T_Tile:
-            if T_Tile[0].variant == "ice":
-                pass
-            else:
-                pass
-
         self.hit_rect.centerx = self.pos.x
         collide_with_walls(self, self.game.all_walls, 'x')
         self.hit_rect.centery = self.pos.y
         collide_with_walls(self, self.game.all_walls, 'y')
         self.rect.center = self.hit_rect.center
+
+        tiles_touched = pg.sprite.spritecollide(self, self.game.all_tiles, False)
+        #Teleporter code: If the player touches a tile with the variant 'teleporter' then it will load the next level based on the current level
+        if any(tile.variant == 'teleporter' for tile in tiles_touched):
+            level_links = {'level1.txt': 'The_Sea.txt', 
+                           'The_Sea.txt': 'level3.txt',
+                           'level3.txt': 'level1.txt'}
+            self.game.next_level = level_links.get(self.game.current_level)
 
 #Enemy Class
 #Copied all the code from the Player class but changed some stuff
@@ -294,7 +294,7 @@ class Coin(Sprite):
 #Copied the code from the Wall
 class FloorTile(Sprite):
     def __init__(self, game, x, y, color): 
-        self.groups = game.all_sprites, game.all_tiles
+        self.groups = game.all_tiles
         Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
